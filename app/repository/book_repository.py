@@ -60,9 +60,10 @@ class BookRepository:
         with self.session_factory() as session:
             try:
                 session.query(Book).filter(book.id == Book.id).update({
-                    'name': book.name,
-                    'bio': book.bio,
-                    'birthdate': book.birthdate
+                    'title': book.title,
+                    'description': book.description,
+                    'author_id': book.author_id,
+                    'publish_date': book.publish_date
                 })
                 session.commit()
             except IntegrityError as e:
