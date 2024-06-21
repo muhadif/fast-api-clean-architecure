@@ -1,0 +1,20 @@
+meta {
+  name: Create Book
+  type: http
+  seq: 7
+}
+
+post {
+  url: http://localhost:8000/api/books
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "adif book 1",
+    "description": "dasdssdaddas",
+    "author_id": 2,
+    "publish_date": "2024-06-20T12:00:00"
+  }
+}

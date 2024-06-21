@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "fast-api-crud",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

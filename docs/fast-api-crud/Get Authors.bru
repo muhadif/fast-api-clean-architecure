@@ -1,0 +1,16 @@
+meta {
+  name: Get Authors
+  type: http
+  seq: 3
+}
+
+get {
+  url: http://localhost:8000/api/authors?page=1&pageSize=2
+  body: json
+  auth: none
+}
+
+query {
+  page: 1
+  pageSize: 2
+}
