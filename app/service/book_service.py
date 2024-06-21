@@ -17,12 +17,10 @@ class BookService:
 
     def create(self, req: CreateBook):
         book = Book(**req.dict())
-        book.birthdate = req.parsed_datetime()
         return self.book_repository.create(book)
 
     def update(self, req: UpdateBook):
         book = Book(**req.dict())
-        book.birthdate = req.parsed_datetime()
         return self.book_repository.update(book)
 
     def delete(self, id):
