@@ -1,7 +1,8 @@
+# __init__.py
+
 from typing import Optional
 from sqlalchemy import String, Text, Date, ForeignKey, Integer
-from sqlalchemy.orm import relationship, Mapped, mapped_column
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship, Mapped, mapped_column, declarative_base
 
 Base = declarative_base()
 

@@ -9,9 +9,6 @@ class CreateAuthor(BaseModel):
     bio: str
     birthdate: str
 
-    class Config:
-        orm_mode = True
-
     def parsed_datetime(self) -> datetime:
         return datetime.fromisoformat(self.birthdate)
 
@@ -21,9 +18,6 @@ class UpdateAuthor(BaseModel):
     name: str
     bio: str
     birthdate: str
-
-    class Config:
-        orm_mode = True
 
     def parsed_datetime(self) -> datetime:
         return datetime.fromisoformat(self.birthdate)

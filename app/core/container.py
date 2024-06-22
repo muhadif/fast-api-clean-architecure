@@ -1,5 +1,6 @@
 from dependency_injector import containers, providers
 
+from app.core.cacbe import CacheMemory
 from app.core.database import Database
 from app.core.config import configs
 from app.repository.author_repository import AuthorRepository
@@ -17,10 +18,10 @@ class Container(containers.DeclarativeContainer):
     )
 
     db = providers.Singleton(Database, db_url= configs.DATABASE_URI)
-    #
+    cache = providers.Singleton(CacheMemory)
 
-    author_repository = providers.Factory(AuthorRepository, session_factory=db.provided.session)
-    book_repository = providers.Factory(BookRepository, session_factory=db.provided.session)
+    author_repository = providers.Factory(AuthorRepository, session_factory=db.provided.session, cache=cache)
+    book_repository = providers.Factory(BookRepository, session_factory=db.provided.session, cache=cache)
 
     author_service = providers.Factory(AuthorService, author_repository=author_repository, book_repository=book_repository)
     book_service = providers.Factory(BookService, book_repository=book_repository)

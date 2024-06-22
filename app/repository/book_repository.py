@@ -4,6 +4,7 @@ from typing import Callable, Type
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
+from app.core.cacbe import CacheMemory
 from app.core.exceptions import DuplicatedError, InternalError
 from app.model.model import Book, Author
 from app.schema.book import CreateBook, GetBookRequest, GetBookResponse, Book as BookSchema
@@ -12,9 +13,10 @@ from app.schema.author import Author as AuthorSchema
 
 
 class BookRepository:
-    def __init__(self, session_factory: Callable[..., AbstractContextManager[Session]]) -> None:
+    def __init__(self, session_factory: Callable[..., AbstractContextManager[Session]], cache: CacheMemory) -> None:
         self.session_factory = session_factory
         self.model = Book
+        self.cache = cache
 
     def get(self, req: GetBookRequest):
         with self.session_factory() as session:
@@ -42,8 +44,16 @@ class BookRepository:
             return resp
 
     def get_by_id(self, id: int) -> Type[Book] | None:
+        cache_key = f"book_get_by_id_{id}"
         with self.session_factory() as session:
-            return session.query(self.model).filter_by(id=id).first()
+            try:
+                book = self.cache.get(cache_key)
+                if book is None:
+                    book = session.query(self.model).filter_by(id=id).first()
+                    self.cache.set(cache_key, book)
+            except Exception as e:
+                raise InternalError(e)
+            return book
 
     def create(self, book : Book):
         with self.session_factory() as session:
