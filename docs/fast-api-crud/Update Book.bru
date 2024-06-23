@@ -1,0 +1,21 @@
+meta {
+  name: Update Book
+  type: http
+  seq: 9
+}
+
+put {
+  url: http://localhost:8000/api/books/3
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "id": 3,
+    "title": "Hi adif book 1",
+    "description": "dasdas",
+    "author_id": 3,
+    "publish_date": "2010-06-20T12:00:00"
+  }
+}
