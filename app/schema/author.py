@@ -7,7 +7,7 @@ from pydantic import BaseModel
 class CreateAuthor(BaseModel):
     name: str
     bio: str
-    birthdate: str
+    birthdate: datetime
 
     def parsed_datetime(self) -> datetime:
         return datetime.fromisoformat(self.birthdate)

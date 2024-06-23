@@ -7,7 +7,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.core.cacbe import CacheMemory
-from app.core.exceptions import DuplicatedError, InternalError
+from app.core.exceptions import DuplicatedError, InternalError, NotFoundError
 from app.model.model import Author
 from app.schema.author import CreateAuthor, GetAuthorRequest, GetAuthorResponse, Author as AuthorSchema
 

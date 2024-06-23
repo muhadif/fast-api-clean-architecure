@@ -9,3 +9,7 @@ uvicorn app.main:app
 ```
 export PYTHONPATH=$PWD
 ```
+2. Run with `pytest`
+```
+pytest tests
+```

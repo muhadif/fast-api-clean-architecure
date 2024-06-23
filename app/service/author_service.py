@@ -18,12 +18,11 @@ class AuthorService:
         return self.author_repository.get_by_id(id)
 
     def create(self, req: CreateAuthor):
-        author = Author(**req.dict())
-        author.birthdate = req.parsed_datetime()
+        author = Author(**req.model_dump())
         return self.author_repository.create(author)
 
     def update(self, req: UpdateAuthor):
-        author = Author(**req.dict())
+        author = Author(**req.model_dump())
         author.birthdate = req.parsed_datetime()
         return self.author_repository.update(author)
 

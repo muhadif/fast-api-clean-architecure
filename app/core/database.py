@@ -2,8 +2,10 @@ from contextlib import AbstractContextManager, contextmanager
 from typing import Any, Callable
 
 from sqlalchemy import create_engine, orm
-from sqlalchemy.ext.declarative import as_declarative, declared_attr
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.declarative import declared_attr
+from sqlalchemy.orm import Session, as_declarative
+
+from app.core.config import configs
 
 
 @as_declarative()
@@ -20,6 +22,8 @@ class BaseModel:
 
 class Database:
     def __init__(self, db_url: str) -> None:
+        if configs.ENV == "test":
+            db_url = "sqlite:///./test.db"  # For testing, you can use an in-memory DB
         self._engine = create_engine(db_url, echo=True)
         self._session_factory = orm.scoped_session(
             orm.sessionmaker(
@@ -35,6 +39,7 @@ class Database:
     @contextmanager
     def session(self) -> Callable[..., AbstractContextManager[Session]]:
         session: Session = self._session_factory()
+
         try:
             yield session
         except Exception:

@@ -2,6 +2,7 @@ from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Depends
 
 from app.core.container import Container
+from app.core.exceptions import NotFoundError
 from app.model.model import Book
 from app.schema.book import CreateBook, UpdateBook, GetBookRequest
 from app.schema.base import CommonSuccessResponse
@@ -17,13 +18,16 @@ router = APIRouter(
 @router.get("/{id}")
 @inject
 async def get_by_id(id: int, service: BookService = Depends(Provide[Container.book_service])):
-    return service.get_by_id(id)
+    book =  service.get_by_id(id)
+    if book is None:
+        raise NotFoundError(detail="Book not found")
+
+    return book
 
 @router.get("/")
 @inject
 async def get(req: GetBookRequest = Depends(), service: BookService = Depends(Provide[Container.book_service])):
     return service.get(req)
-
 
 @router.post("/")
 @inject

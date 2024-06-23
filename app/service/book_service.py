@@ -16,11 +16,11 @@ class BookService:
         return self.book_repository.get_by_id(id)
 
     def create(self, req: CreateBook):
-        book = Book(**req.dict())
+        book = Book(**req.model_dump())
         return self.book_repository.create(book)
 
     def update(self, req: UpdateBook):
-        book = Book(**req.dict())
+        book = Book(**req.model_dump())
         return self.book_repository.update(book)
 
     def delete(self, id):

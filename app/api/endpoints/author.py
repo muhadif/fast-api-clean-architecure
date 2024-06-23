@@ -2,6 +2,7 @@ from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Depends
 
 from app.core.container import Container
+from app.core.exceptions import NotFoundError
 from app.model.model import Author
 from app.schema.author import CreateAuthor, UpdateAuthor, GetAuthorRequest
 from app.schema.base import CommonSuccessResponse
@@ -17,7 +18,11 @@ router = APIRouter(
 @router.get("/{id}")
 @inject
 async def get_by_id(id: int, service: AuthorService = Depends(Provide[Container.author_service])):
-    return service.get_by_id(id)
+    author = service.get_by_id(id)
+    if author is None:
+        raise NotFoundError(detail="Author not found")
+
+    return author
 
 @router.get("/")
 @inject
